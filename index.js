@@ -9,7 +9,7 @@ const port = 3000;
 app.use(express.urlencoded({ extended: false }));
 
 app.use((req, res, next) => {
-    console.log(req.headers);
+  console.log(req.headers);
   req.myUserName = "Aayushmaan";
   fs.appendFile(
     "log.txt",
@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/users", (req, res) => {
-    res.setHeader("X-MyName","Aayushmaan")//Use X-{HeaderName} to set custom headers .
+  res.setHeader("X-MyName", "Aayushmaan"); //Use X-{HeaderName} to set custom headers .
   const html = `
     <ul>${users.map((user) => `<li>${user.first_name}</li>`).join("")}</ul>
     `;
@@ -69,9 +69,12 @@ app
   });
 app.post("/api/users", (req, res) => {
   const body = req.body;
+  if (!body || !body.first_name || !body.email || !body.gender) {
+    return res.status(400).send("There is an error in your data");
+  }
   users.push({ ...body, id: users.length + 1 });
   fs.writeFile("./MOCK_DATA.json", JSON.stringify(users), (err, data) => {
-    return res.json({ status: "Success", id: users.length + 1 });
+    return res.status(201).json({ status: "Success", id: users.length + 1 });
   });
 });
 
