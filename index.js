@@ -9,6 +9,7 @@ const port = 3000;
 app.use(express.urlencoded({ extended: false }));
 
 app.use((req, res, next) => {
+    console.log(req.headers);
   req.myUserName = "Aayushmaan";
   fs.appendFile(
     "log.txt",
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/users", (req, res) => {
+    res.setHeader("X-MyName","Aayushmaan")//Use X-{HeaderName} to set custom headers .
   const html = `
     <ul>${users.map((user) => `<li>${user.first_name}</li>`).join("")}</ul>
     `;
